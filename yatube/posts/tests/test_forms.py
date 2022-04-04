@@ -28,20 +28,19 @@ class PostCreateFormTest(TestCase):
         self.user = User.objects.create_user(username='Noname')
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-    
+
     def test_create_post(self):
         '''Проверка создания поста'''
         posts_count = Post.objects.count()
         form_data = {'text': 'Текст записанный в форму',
                      'group': self.group.id}
         response = self.authorized_client.post(reverse('posts:post_create'),
-                        data=form_data, follow=True)
+                                               data=form_data, follow=True)
         error_name1 = 'Данные поста не совпадают'
         self.assertEqual(response.status_code, 200)
         self.assertTrue(Post.objects.filter(
-                text='Текст записанный в форму', group=1,
+                        text='Текст записанный в форму', group=1,
                         author=self.user).exists(), error_name1)
         error_name2 = 'Поcт не добавлен в базу данных'
         self.assertEqual(Post.objects.count(),
                          posts_count + 1, error_name2)
-                         
