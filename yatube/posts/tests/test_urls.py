@@ -16,7 +16,7 @@ class PostURLTests(TestCase):
         cls.group = Group.objects.create(
             title='Тестовая группа',
             slug='test-slug',
-            description='Описание группы растянутое на много знаков',
+            description='Описание группы',
         )
         cls.post = Post.objects.create(
             author=cls.user,
@@ -44,6 +44,7 @@ class PostURLTests(TestCase):
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
                 response = self.author_client.get(address)
+                print('Код ответа =', response.status_code)
                 self.assertTemplateUsed(response, template, 'Внимание ошибка!')
 
     def test_post_urls_status_client(self):
@@ -72,3 +73,18 @@ class PostURLTests(TestCase):
         пользователю."""
         response = self.authorized_client.get('/create/')
         self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_post_edit_url_redirect_authorized_client(self):
+        """Страница по адресу post_edit перенаправит авторизованного
+        не автора."""
+        response = self.authorized_client.get(
+            f'/posts/{self.post.id}/edit')
+        self.assertEqual(response.status_code, 301)
+
+    def test_post_create_url_redirect_anonymous_on_admin_login(self):
+        """Страница по адресу post_create перенаправит анонимного
+        пользователя на страницу логина.
+        """
+        response = self.client.get('/create/', follow=True)
+        self.assertRedirects(
+            response, ('/auth/login/?next=/create/'))
