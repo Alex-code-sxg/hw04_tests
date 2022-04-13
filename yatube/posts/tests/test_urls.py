@@ -44,7 +44,6 @@ class PostURLTests(TestCase):
         for address, template in templates_url_names.items():
             with self.subTest(address=address):
                 response = self.author_client.get(address)
-                print('Код ответа =', response.status_code)
                 self.assertTemplateUsed(response, template, 'Внимание ошибка!')
 
     def test_post_urls_status_client(self):

@@ -22,7 +22,6 @@ class PostURLTest(TestCase):
             author=cls.user,
             text='Тестовая пост',
             group=cls.group,
-            image='tolstoy.jpg'
         )
 
     def setUp(self):
@@ -38,15 +37,15 @@ class PostURLTest(TestCase):
             'posts/index.html': reverse('posts:index'),
             'posts/group_list.html': (
                 reverse('posts:group_list',
-                        kwargs={'slug': self.group.slug})
+                        kwargs={'slug': f'{self.group.slug}'})
             ),
             'posts/profile.html': (
                 reverse('posts:profile',
-                        kwargs={'username': self.user.username})
+                        kwargs={'username': f'{self.user.username}'})
             ),
             'posts/post_detail.html': (
                 reverse('posts:post_detail',
-                        kwargs={'post_id': self.post.pk})
+                        kwargs={'post_id': f'{self.post.pk}'})
             ),
             'posts/create_post.html': reverse('posts:post_create'),
         }
@@ -105,7 +104,6 @@ class PostURLTest(TestCase):
         form_fields = {
             'text': forms.fields.CharField,
             'group': forms.fields.ChoiceField,
-            'image': forms.fields.ImageField,
         }
 
         for value, expected in form_fields.items():

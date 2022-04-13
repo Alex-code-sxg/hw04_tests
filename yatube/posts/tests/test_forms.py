@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 
 from http import HTTPStatus
-
 from ..models import Group, Post
 
 
