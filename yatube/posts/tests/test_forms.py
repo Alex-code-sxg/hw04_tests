@@ -69,9 +69,11 @@ class PostCreateFormTest(TestCase):
         self.assertEqual(Post.objects.count(),
                          posts_count + 1, error_name)
 
-    def test_edit_post_not_accessed_for_guest_client(self):
-        """Страница post_edit недоступна неавторизованному пользователю"""
-        response = self.guest_client.get(
-            'posts/<int:post_id>/edit/',
-            follow=True)
-        self.assertTrue(response.status_code, 301)
+
+def test_edit_post_not_accessed_for_guest_client(self):
+    '''Страница post_edit недоступна неавторизованному пользователю'''
+    self.guest_client = Client()
+    response = self.guest_client.get(reverse(
+        'posts:post_detail', kwargs={'post_id': self.post.pk})
+    )
+    self.assertEqual(response.status_code, 301)
