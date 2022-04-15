@@ -1,9 +1,13 @@
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from yatube.settings import AMOUNT_CHAR
 
 from ..models import Group, Post
+
+settings.DEBUG = True
+
 
 User = get_user_model()
 

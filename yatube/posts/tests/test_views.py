@@ -1,13 +1,15 @@
-from django.test import TestCase, Client
-from django.contrib.auth import get_user_model
-from django.urls import reverse
 from django import forms
 from django.conf import settings
-from django.conf import settings
-settings.DEBUG = True
-from yatube.settings import PAGINATOR_TEST_AMOUNT, AMOUNT_POSTS
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
+
+from yatube.settings import AMOUNT_POSTS, PAG_TEST_AMOUNT
 
 from ..models import Group, Post
+
+settings.DEBUG = True
+
 
 User = get_user_model()
 
@@ -128,7 +130,7 @@ class PaginatorViewsTest(TestCase):
             description='Тестовое описание',
         )
         cls.posts = []
-        for i in range(0, PAGINATOR_TEST_AMOUNT):
+        for i in range(0, PAG_TEST_AMOUNT):
             cls.posts.append(Post.objects.create(
                 text=f'Рандомный текст{i}',
                 author=cls.user,
@@ -150,7 +152,8 @@ class PaginatorViewsTest(TestCase):
         for page in pages:
             with self.subTest(page=page):
                 response = self.guest_client.get(page)
-                self.assertEqual(len(response.context.get('page_obj')), AMOUNT_POSTS)
+                self.assertEqual(len(
+                    response.context.get('page_obj')), AMOUNT_POSTS)
 
     def test_last_page_contains_three_records(self):
         """Проверка паджинатора 3 поста страница 2."""
@@ -164,4 +167,5 @@ class PaginatorViewsTest(TestCase):
         for page in pages:
             with self.subTest(page=page):
                 response = self.guest_client.get(page + '?page=2')
-                self.assertEqual(len(response.context.get('page_obj')), PAGINATOR_TEST_AMOUNT-AMOUNT_POSTS)
+                self.assertEqual(len(response.context.get(
+                    'page_obj')), PAG_TEST_AMOUNT - AMOUNT_POSTS)

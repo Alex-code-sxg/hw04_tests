@@ -1,8 +1,10 @@
-from django.db import models
-from django.contrib.auth import get_user_model
 from django.conf import settings
-settings.DEBUG = True
+from django.contrib.auth import get_user_model
+from django.db import models
+
 from yatube.settings import AMOUNT_CHAR
+
+settings.DEBUG = True
 
 User = get_user_model()
 

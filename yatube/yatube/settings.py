@@ -119,7 +119,7 @@ AMOUNT_POSTS: int = 10
 AMOUNT_SECONDS: int = 20
 index_page: int = 15
 AMOUNT_CHAR: int = 15
-PAGINATOR_TEST_AMOUNT: int = 13
+PAG_TEST_AMOUNT: int = 13
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 
