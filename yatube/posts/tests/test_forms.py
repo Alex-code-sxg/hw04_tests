@@ -54,7 +54,7 @@ class PostCreateFormTest(TestCase):
                      'group': self.group.id}
         response = self.guest_client.post(reverse('posts:post_create'),
                                           data=form_data, follow=False)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, HTTPStatus.FOUND)
         self.assertEqual(Post.objects.count(), posts_count)
 
     def test_create_post_without_group(self):
@@ -75,4 +75,4 @@ class PostCreateFormTest(TestCase):
         response = self.guest_client.get(reverse(
             'posts:post_detail', kwargs={'post_id': self.post.pk})
         )
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, HTTPStatus.OK)

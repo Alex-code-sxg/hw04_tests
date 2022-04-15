@@ -116,9 +116,10 @@ EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 
 AMOUNT_POSTS: int = 10
-AMOUNT_SECONDS = 20
-index_page = 15
-AMOUNT_CHAR = 15
+AMOUNT_SECONDS: int = 20
+index_page: int = 15
+AMOUNT_CHAR: int = 15
+PAGINATOR_TEST_AMOUNT: int = 13
 
 CSRF_FAILURE_VIEW = 'core.views.csrf_failure'
 

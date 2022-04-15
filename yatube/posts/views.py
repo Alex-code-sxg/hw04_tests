@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 # from django.views.decorators.cache import cache_page
+from django.conf import settings
+settings.DEBUG = True
 from yatube.settings import AMOUNT_POSTS
 
 from .models import Post, Group, User, Comment

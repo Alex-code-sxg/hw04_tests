@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
-
+from django.conf import settings
+settings.DEBUG = True
+from yatube.settings import AMOUNT_CHAR
 
 User = get_user_model()
 
@@ -54,7 +56,7 @@ class Post(models.Model):
         verbose_name_plural = "Посты"
 
     def __str__(self):
-        return self.text[:15]
+        return self.text[:AMOUNT_CHAR]
 
 
 class Comment(models.Model):

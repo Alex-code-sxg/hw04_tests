@@ -2,6 +2,10 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django import forms
+from django.conf import settings
+from django.conf import settings
+settings.DEBUG = True
+from yatube.settings import PAGINATOR_TEST_AMOUNT, AMOUNT_POSTS
 
 from ..models import Group, Post
 
@@ -90,12 +94,13 @@ class PostURLTest(TestCase):
                     PostURLTest.post.group)
 
     def test_profile_page_show_correct_context_author(self):
+        """Шаблон profile сформирован с правильным контекстом (для автора)."""
         response = self.authorized_client.get(reverse(
             'posts:profile',
             kwargs={'username': self.user.username}))
-        first_post = response.context['author']
+        response.context['author']
         self.assertEqual(
-            first_post.username,
+            PostURLTest.user.username,
             PostURLTest.post.author.username)
 
     def test_post_create_show_correct_context(self):
@@ -123,7 +128,7 @@ class PaginatorViewsTest(TestCase):
             description='Тестовое описание',
         )
         cls.posts = []
-        for i in range(0, 13):
+        for i in range(0, PAGINATOR_TEST_AMOUNT):
             cls.posts.append(Post.objects.create(
                 text=f'Рандомный текст{i}',
                 author=cls.user,
@@ -145,7 +150,7 @@ class PaginatorViewsTest(TestCase):
         for page in pages:
             with self.subTest(page=page):
                 response = self.guest_client.get(page)
-                self.assertEqual(len(response.context.get('page_obj')), 10)
+                self.assertEqual(len(response.context.get('page_obj')), AMOUNT_POSTS)
 
     def test_last_page_contains_three_records(self):
         """Проверка паджинатора 3 поста страница 2."""
@@ -159,4 +164,4 @@ class PaginatorViewsTest(TestCase):
         for page in pages:
             with self.subTest(page=page):
                 response = self.guest_client.get(page + '?page=2')
-                self.assertEqual(len(response.context.get('page_obj')), 3)
+                self.assertEqual(len(response.context.get('page_obj')), PAGINATOR_TEST_AMOUNT-AMOUNT_POSTS)
